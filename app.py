@@ -33,8 +33,7 @@ EXAMPLES = [
 ]
 
 INTRO = """
-# SDXL Background Replacement for Product Images
-_from your friends at_ 🛍️[Shopify](https://www.shopify.com/)
+# Shopify Image Background Replacement
 
 [![Duplicate this Space](https://huggingface.co/datasets/huggingface/badges/resolve/main/duplicate-this-space-md.svg)](https://huggingface.co/spaces/Shopify/background-replacement?duplicate=true)
 
