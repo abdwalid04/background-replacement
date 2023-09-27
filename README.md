@@ -1,15 +1,15 @@
 ---
-title: SDXL Background Replacement for Product Images
+title: Shopify Image Background Replacement
 emoji: 🖼️
 colorFrom: green
-colorTo: purple
+colorTo: green
 sdk: gradio
 sdk_version: 3.43.2
 app_file: app.py
 pinned: true
 ---
 
-# SDXL Background Replacement for Product Images
+# Shopify Image Background Replacement
 
 Building an online store requires lots of high quality product and marketing images. This is an early demo of a background replacement tool built with Stable Diffusion XL that makes it easy to use your existing product images to make something new. Please be patient during peak demand. 😅
 
@@ -31,4 +31,4 @@ You can check our FAQs below! We are also gathering resources from the community
 4. **I got a weird image, can I report it or send it to you?** Absolutely! We appreciate your help in identifying any issues or anomalies. Please report any strange or unexpected results with the image and relevant details in the community channel. It will help us refine and improve the tool for future users.
 5. **Are there any limitations to the demo?** This tool is currently in its early stages and you may hit edge cases that don’t function as intended. Share these examples with us. We appreciate your patience and feedback as we work to improve the technology!
 6. **What are the system requirements to run the background replacement demo?** If you’d like to run the Space on your own GPU it can be run on an NVIDIA T4 Medium but we recommend the NVIDIA A10G Small for improved stability and performance.
-7. **When will this feature be available on Shopify?** We’re releasing an early demo on Hugging Face to refine and enhance the technology based on valuable feedback from the community. While we can't provide an exact launch date just yet, keep an eye out for updates as we approach the official launch. 
+7. **When will this feature be available on Shopify?** We’re releasing an early demo on Hugging Face to refine and enhance the technology based on valuable feedback from the community. While we can't provide an exact launch date just yet, keep an eye out for updates as we approach the official launch.
