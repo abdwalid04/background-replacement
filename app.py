@@ -36,6 +36,12 @@ INTRO = """
 # Shopify Image Background Replacement
 
 [![Duplicate this Space](https://huggingface.co/datasets/huggingface/badges/resolve/main/duplicate-this-space-md.svg)](https://huggingface.co/spaces/Shopify/background-replacement?duplicate=true)
+Minimum recommended hardware: Nvidia A10G large (46 GB RAM, 24 GB VRAM)
+
+## Status
+🏝️ Since the publication of this prototype, we've devoted our efforts to developing an enhanced version within Shopify's admin interface, which is now accessible to all Shopify merchants across all subscription plans. This original space is no longer maintained and runs on a CPU-only free tier. Please duplicate this space and utilize your own GPUs.
+
+<hr>
 
 Building an online store requires lots of high quality product and marketing images. This is an early demo of a background replacement tool built with Stable Diffusion XL that makes it easy to use your existing product images to make something new. Please be patient during peak demand. 😅
 
