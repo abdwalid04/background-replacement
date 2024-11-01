@@ -217,4 +217,4 @@ with gr.Blocks(css=custom_css) as iface:
         ],
     )
 
-iface.queue(max_size=10, api_open=False).launch(show_api=False)
+iface.queue(max_size=10, api_open=False).launch(show_api=False, share=False)
