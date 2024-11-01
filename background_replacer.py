@@ -11,6 +11,7 @@ import numpy as np
 
 from captioner import init as init_captioner, derive_caption
 from upscaler import init as init_upscaler
+from segmenter import init as init_segmenter, segment
 from depth_estimator import init as init_depth_estimator, get_depth_map
 from pipeline import init as init_pipeline, run_pipeline
 from image_utils import ensure_resolution, crop_centered
@@ -20,6 +21,7 @@ developer_mode = os.getenv('DEV_MODE', False)
 # You must uncomment this initialization block!
 init_captioner()
 init_upscaler()
+init_segmenter()
 init_depth_estimator()
 init_pipeline()
 
@@ -35,6 +37,8 @@ def replace_background(
     original,
     positive_prompt,
     negative_prompt,
+    controlnet_conditioning_scale,
+    guidance_scale,
     options,
 ):
     pbar = tqdm(total=7)
@@ -58,7 +62,7 @@ def replace_background(
     torch.cuda.empty_cache()
 
     print("Segmenting...")
-    [cropped, crop_mask] = resized, resized.split()[-1]
+    [cropped, crop_mask] = segment(resized)
     pbar.update(1)
 
     torch.cuda.empty_cache()
@@ -112,7 +116,9 @@ def replace_background(
         positive_prompt=final_positive_prompt,
         negative_prompt=final_negative_prompt,
         image=[masked_depth_map],
-        seed=options.get('seed')
+        controlnet_conditioning_scale=controlnet_conditioning_scale,
+        guidance_scale=guidance_scale,
+        seed=options.get("seed"),
     )
     pbar.update(1)
 

@@ -1,5 +1,10 @@
 import torch
-from diffusers import StableDiffusionXLControlNetPipeline, ControlNetModel, AutoencoderKL, UniPCMultistepScheduler
+from diffusers import (
+    StableDiffusionXLControlNetPipeline,
+    ControlNetModel,
+    AutoencoderKL,
+    UniPCMultistepScheduler,
+)
 
 device = None
 pipe = None
@@ -15,7 +20,7 @@ def init():
     depth_controlnet = ControlNetModel.from_pretrained(
         "diffusers/controlnet-depth-sdxl-1.0",
         use_safetensors=True,
-        torch_dtype=torch.float16
+        torch_dtype=torch.float16,
     ).to(device)
 
     print("Initializing autoencoder...")
@@ -33,7 +38,7 @@ def init():
         vae=vae,
         variant="fp16",
         use_safetensors=True,
-        torch_dtype=torch.float16
+        torch_dtype=torch.float16,
         # low_cpu_mem_usage=True
     ).to(device)
 
@@ -44,7 +49,14 @@ def init():
     pipe.enable_xformers_memory_efficient_attention()
 
 
-def run_pipeline(image, positive_prompt, negative_prompt, seed):
+def run_pipeline(
+    image,
+    positive_prompt,
+    negative_prompt,
+    controlnet_conditioning_scale,
+    guidance_scale,
+    seed,
+):
     if seed == -1:
         print("Using random seed")
         generator = None
@@ -57,10 +69,10 @@ def run_pipeline(image, positive_prompt, negative_prompt, seed):
         negative_prompt=negative_prompt,
         num_inference_steps=30,
         num_images_per_prompt=4,
-        controlnet_conditioning_scale=0.65,
-        guidance_scale=10.0,
+        controlnet_conditioning_scale=controlnet_conditioning_scale,
+        guidance_scale=guidance_scale,
         generator=generator,
-        image=image
+        image=image,
     ).images
 
     return images

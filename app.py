@@ -52,6 +52,8 @@ def generate(
     depth_map_feather_threshold,
     depth_map_dilation_iterations,
     depth_map_blur_radius,
+    controlnet_conditioning_scale,
+    guidance_scale,
     progress=gr.Progress(track_tqdm=True)
 ):
     if image is None:
@@ -64,7 +66,14 @@ def generate(
         'depth_map_blur_radius': depth_map_blur_radius,
     }
 
-    return replace_background(image, positive_prompt, negative_prompt, options)
+    return replace_background(
+        image,
+        positive_prompt,
+        negative_prompt,
+        controlnet_conditioning_scale,
+        guidance_scale,
+        options,
+    )
 
 
 custom_css = """
@@ -153,6 +162,20 @@ with gr.Blocks(css=custom_css) as iface:
                         minimum=0,
                         visible=developer_mode
                     )
+                    depth_map_blur_radius = gr.Number(
+                        label="Controlnet Conditioning Scale",
+                        precision=0,
+                        value=0.65,
+                        minimum=0,
+                        visible=developer_mode,
+                    )
+                    depth_map_blur_radius = gr.Number(
+                        label="Guidance Scale",
+                        precision=0,
+                        value=10.0,
+                        minimum=0,
+                        visible=developer_mode,
+                    )
             else:
                 seed = gr.Number(value=-1, visible=False)
                 depth_map_feather_threshold = gr.Slider(
@@ -208,6 +231,8 @@ with gr.Blocks(css=custom_css) as iface:
             depth_map_feather_threshold,
             depth_map_dilation_iterations,
             depth_map_blur_radius
+            controlnet_conditioning_scale,
+            guidance_scale,
         ],
         outputs=[
             results,
