@@ -4,7 +4,7 @@ import gradio as gr
 
 from background_replacer import replace_background
 
-developer_mode = os.getenv('DEV_MODE', True)
+developer_mode = os.getenv("DEV_MODE", True)
 
 DEFAULT_POSITIVE_PROMPT = "on the pavement, poolside, idyllic infinity pool, Hawaiian hilltops, commercial product photography"
 DEFAULT_NEGATIVE_PROMPT = ""
@@ -54,16 +54,16 @@ def generate(
     depth_map_blur_radius,
     controlnet_conditioning_scale,
     guidance_scale,
-    progress=gr.Progress(track_tqdm=True)
+    progress=gr.Progress(track_tqdm=True),
 ):
     if image is None:
         return [None, None, None, None]
 
     options = {
-        'seed': seed,
-        'depth_map_feather_threshold': depth_map_feather_threshold,
-        'depth_map_dilation_iterations': depth_map_dilation_iterations,
-        'depth_map_blur_radius': depth_map_blur_radius,
+        "seed": seed,
+        "depth_map_feather_threshold": depth_map_feather_threshold,
+        "depth_map_dilation_iterations": depth_map_dilation_iterations,
+        "depth_map_blur_radius": depth_map_blur_radius,
     }
 
     return replace_background(
@@ -112,64 +112,59 @@ with gr.Blocks(css=custom_css) as iface:
     with gr.Row():
         with gr.Column():
             image_upload = gr.Image(
-                label="Product image",
-                type="pil",
-                elem_id="image-upload"
+                label="Product image", type="pil", elem_id="image-upload"
             )
-            caption = gr.Label(
-                label="Caption",
-                visible=developer_mode
-            )
+            caption = gr.Label(label="Caption", visible=developer_mode)
         with gr.Column(elem_id="params"):
-            with gr.Tab('Prompts'):
+            with gr.Tab("Prompts"):
                 positive_prompt = gr.Textbox(
                     label="Positive Prompt: describe what you'd like to see",
                     lines=3,
-                    value=DEFAULT_POSITIVE_PROMPT
+                    value=DEFAULT_POSITIVE_PROMPT,
                 )
                 negative_prompt = gr.Textbox(
                     label="Negative Prompt: describe what you want to avoid",
                     lines=3,
-                    value=DEFAULT_NEGATIVE_PROMPT
+                    value=DEFAULT_NEGATIVE_PROMPT,
                 )
             if developer_mode:
-                with gr.Tab('Options'):
+                with gr.Tab("Options"):
                     seed = gr.Number(
                         label="Seed",
                         precision=0,
                         value=0,
                         elem_id="seed",
-                        visible=developer_mode
+                        visible=developer_mode,
                     )
                     depth_map_feather_threshold = gr.Slider(
                         label="Depth map feather threshold",
                         value=128,
                         minimum=0,
                         maximum=255,
-                        visible=developer_mode
+                        visible=developer_mode,
                     )
                     depth_map_dilation_iterations = gr.Number(
                         label="Depth map dilation iterations",
                         precision=0,
                         value=10,
                         minimum=0,
-                        visible=developer_mode
+                        visible=developer_mode,
                     )
                     depth_map_blur_radius = gr.Number(
                         label="Depth map blur radius",
                         precision=0,
                         value=10,
                         minimum=0,
-                        visible=developer_mode
+                        visible=developer_mode,
                     )
-                    depth_map_blur_radius = gr.Number(
+                    controlnet_conditioning_scale = gr.Number(
                         label="Controlnet Conditioning Scale",
                         precision=0,
                         value=0.65,
                         minimum=0,
                         visible=developer_mode,
                     )
-                    depth_map_blur_radius = gr.Number(
+                    guidance_scale = gr.Number(
                         label="Guidance Scale",
                         precision=0,
                         value=10.0,
@@ -178,37 +173,29 @@ with gr.Blocks(css=custom_css) as iface:
                     )
             else:
                 seed = gr.Number(value=-1, visible=False)
-                depth_map_feather_threshold = gr.Slider(
-                    value=128, visible=False)
+                depth_map_feather_threshold = gr.Slider(value=128, visible=False)
                 depth_map_dilation_iterations = gr.Number(
-                    precision=0, value=10, visible=False)
-                depth_map_blur_radius = gr.Number(
-                    precision=0, value=10, visible=False)
+                    precision=0, value=10, visible=False
+                )
+                depth_map_blur_radius = gr.Number(precision=0, value=10, visible=False)
+                controlnet_conditioning_scale = gr.Number(
+                    precision=0, value=0.65, visible=False
+                )
+                guidance_scale = gr.Number(precision=0, value=10.0, visible=False)
 
     # Enable this button!
-    gen_button = gr.Button(
-        value="Generate!", variant="primary", interactive=True)
+    gen_button = gr.Button(value="Generate!", variant="primary", interactive=True)
 
-    with gr.Tab('Results'):
-        results = gr.Gallery(
-            show_label=False,
-            object_fit="contain",
-            columns=4
-        )
+    with gr.Tab("Results"):
+        results = gr.Gallery(show_label=False, object_fit="contain", columns=4)
 
     if developer_mode:
-        with gr.Tab('Generated'):
-            generated = gr.Gallery(
-                show_label=False,
-                object_fit="contain",
-                columns=4
-            )
+        with gr.Tab("Generated"):
+            generated = gr.Gallery(show_label=False, object_fit="contain", columns=4)
 
-        with gr.Tab('Pre-processing'):
+        with gr.Tab("Pre-processing"):
             pre_processing = gr.Gallery(
-                show_label=False,
-                object_fit="contain",
-                columns=4
+                show_label=False, object_fit="contain", columns=4
             )
     else:
         generated = gr.Gallery(visible=False)
@@ -230,16 +217,11 @@ with gr.Blocks(css=custom_css) as iface:
             seed,
             depth_map_feather_threshold,
             depth_map_dilation_iterations,
-            depth_map_blur_radius
+            depth_map_blur_radius,
             controlnet_conditioning_scale,
             guidance_scale,
         ],
-        outputs=[
-            results,
-            generated,
-            pre_processing,
-            caption
-        ],
+        outputs=[results, generated, pre_processing, caption],
     )
 
 iface.queue(max_size=10, api_open=False).launch(show_api=False, share=False)
